@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.send('Home Panel');
+    res.render('admin/index');
 });
 
 router.get('/posts', (req, res) => {
@@ -10,7 +10,11 @@ router.get('/posts', (req, res) => {
 });
 
 router.get('/categories', (req, res) => {
-   res.send('Categories Page');
+   res.render('admin/categories');
+});
+
+router.get('/categories/add', (req, res) => {
+   res.render('admin/addcategories');
 });
 
 
