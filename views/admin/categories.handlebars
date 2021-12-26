@@ -1,2 +1,17 @@
 <h2>Categories List</h2><br>
 <a href="/admin/categories/add"><button class="btn btn-success">+ Add a new category</button></a>
+<br>
+<br>
+{{#each categories}}
+    <div class="card">
+        <div class="card-body">
+            <h4>{{nome}}</h4>
+            <small>Slug: {{slug}}</small><br>
+            <small>Date: {{date}}</small><br>
+            <br>
+            <a href="/admin/categories/edit/{{_id}}"><button class="btn btn-primary d-flex flex-column-reverse">Edit Category</button></a>
+        </div>
+    </div>
+    <br>
+{{else}}
+{{/each}}

@@ -1,17 +1,35 @@
 //Importing packages
 const express = require('express');
-//const handlebars = require('express-handlebars');
 const { engine } = require('express-handlebars');
 const bodyParser = require('body-parser');
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const app = express();
 const admin = require('./routes/admin');
 const path = require("path");
+const session = require('express-session');
+const flash = require('connect-flash');
+
 
 //Config
+    //Session
+        app.use(session({
+            secret: 'cursodenode',
+            resave: true,
+            saveUninitialized: true
+        }));
+        //Código abaixo precisa estar abaixo da Session
+        app.use(flash());
+    //Midleware
+        app.use((req, res, next) => {
+            res.locals.success_msg = req.flash('success_msg');
+            res.locals.error_msg = req.flash('error_msg');
+            next();
+        });
+
     //Body Parser
         app.use(bodyParser.urlencoded({extended: true}));
         app.use(bodyParser.json());
+
     //Handlebars
         app.engine(
             'handlebars',
@@ -23,9 +41,20 @@ const path = require("path");
         app.set('view engine', 'handlebars');
 
     // Mongoose
-        // Soon
+        mongoose.Promise = global.Promise;
+        mongoose.connect('mongodb://localhost/blogapp').then(() => {
+           console.log('Conectado ao banco de dados MongoDB');
+        }).catch(err => {
+            console.log('Houve um erro ao se conectar com o MongoDB' + err);
+        });
     // Public
         app.use(express.static(path.join(__dirname, 'public')));
+
+        //Midleware
+        app.use((req, res, next) => {
+           console.log('Midleware detected');
+           next();
+        });
 //Routes
 app.get('/', (req, res) => {
    res.send('Main Route');

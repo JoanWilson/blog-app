@@ -1,12 +1,18 @@
+{{#each erros}}
+    <div class="alert alert-danger">{{text}}</div>
+{{else}}
+
+{{/each}}
+
 <h3 class="mb-5">New Category</h3>
 <form action="/admin/categories/new" method="POST">
     <div class="mb-3">
         <label for="name" class="form-label">Name: </label>
-        <input type="text" class="form-control sm" id="name" >
+        <input name="name" type="text" class="form-control sm" id="name" >
     </div>
     <div class="mb-3">
         <label for="slug" class="form-label">Slug: </label>
-        <input type="text" class="form-control sm" id="slug">
+        <input name="slug" type="text" class="form-control sm" id="slug">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
