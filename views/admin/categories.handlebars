@@ -8,10 +8,29 @@
             <h4>{{nome}}</h4>
             <small>Slug: {{slug}}</small><br>
             <small>Date: {{date}}</small><br>
-            <br>
-            <a href="/admin/categories/edit/{{_id}}"><button class="btn btn-primary d-flex flex-column-reverse">Edit Category</button></a>
+            <hr>
+            <p>{{description}}</p><br>
+            <table>
+                <tr>
+                    <td>
+                        <a href="/admin/categories/edit/{{_id}}" class="btn btn-primary mt-2"> Edit</a>
+                    </td>
+                    <td>
+                        <form action="/admin/categories/delete" method="POST">
+                            <input type="hidden" name="id" value="{{_id}}">
+                            <button type="submit" class="btn btn-danger mt-2 mx-3"> Delete </button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+
         </div>
     </div>
     <br>
 {{else}}
+    <div class="card">
+        <div class="card-body">
+            <h3>No Categories found!</h3>
+        </div>
+    </div>
 {{/each}}

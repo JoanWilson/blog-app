@@ -25,7 +25,7 @@ router.get('/categories/add', (req, res) => {
    res.render('admin/addcategories');
 });
 
-router.post('/categories/new', (req, res) => {
+router.post('/categories/add/new', (req, res) => {
 
     var erros = [];
 
@@ -43,23 +43,88 @@ router.post('/categories/new', (req, res) => {
 
     if(erros.length > 0) {
         res.render('admin/addcategories', {erros: erros});
-    } else {
+    } else{
         const newCategory = {
             nome: req.body.name,
-            slug: req.body.slug
+            slug: req.body.slug,
+            description: req.body.description
         }
 
         new Category(newCategory).save().then(() => {
-            req.flash('success_msg', 'Category has been added successfully');
+            req.flash('success-msg', 'Category has been added successfully');
+            console.log('DEU CERTO PORRA')
             res.redirect('/admin/categories');
         }).catch(err => {
-            req.flash('error_msg', 'An error has occurred while adding category: ' + err);
+            req.flash('error-msg', 'An error has occurred while adding category: ' + err);
+            console.log('DEU ERRO PORRA')
+            res.redirect('/admin/categories');
         });
     }
+
+
 });
 
 router.get('/categories/edit/:id', (req, res) => {
+    Category.findOne({_id:req.params.id}).lean().then(category => {
+        res.render('admin/editcategories', {category: category});
+        console.log('Deu bom')
+    }).catch(err => {
+        req.flash('error-msg', 'An error has occurred while' + err);
+        res.redirect('/admin/categories');
+        console.log('Deu ruim')
+    })
 
+    //res.render('admin/editcategories');
+
+});
+
+router.post('/categories/edit', (req, res) => {
+    let erros = [];
+
+
+    if(!req.body.name || typeof req.body.name === undefined) {
+        erros.push({text: 'Name invalid'});
+    }
+
+    if(!req.body.slug || typeof req.body.slug === undefined) {
+        erros.push({text: 'Slug invalid'});
+    }
+
+    if(req.body.name.length < 3) {
+        erros.push({text:'The Name cannot be shorter than 3 letter'});
+    }
+
+    if(erros.length > 0) {
+        res.render('admin/editcategories', {erros: erros});
+    } else{
+        Category.findOne({_id: req.body.id}).then(category => {
+
+            category.nome = req.body.name;
+            category.slug = req.body.slug;
+            category.description = req.body.description;
+            category.save().then(() => {
+                req.flash('success-msg', 'The category has been edited successfully!');
+                res.redirect('/admin/categories');
+            }).catch(err => {
+                req.flash('error-msg', 'The category could not be edited successfully!');
+                res.redirect('/admin/categories');
+            })
+        }).catch(err => {
+            req.flash('error-msg', 'The category could not be edited successfully!');
+            res.redirect('/admin/categories');
+        })
+    }
+
+})
+
+router.post('/categories/delete', (req, res) => {
+   Category.remove({_id:req.body.id}).then(() => {
+       req.flash('success-msg', 'Category deleted successfully!');
+       res.redirect('/admin/categories');
+   }).catch(err => {
+       req.flash('error-msg', 'The category could not be deleted successfully');
+       res.redirect('/admin/categories');
+   })
 });
 
 

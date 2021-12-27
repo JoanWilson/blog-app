@@ -4,15 +4,19 @@ const Schema = mongoose.Schema;
 const Category = new Schema({
    nome: {
        type: String,
-       required: true
+       //required: true
    },
     slug: {
        type: String,
-       required: true
+       //required: true
     },
     date: {
        type: Date,
         default: Date.now()
+    },
+    description: {
+       type: String,
+        //required: true
     }
 });
 

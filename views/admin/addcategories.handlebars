@@ -5,14 +5,18 @@
 {{/each}}
 
 <h3 class="mb-5">New Category</h3>
-<form action="/admin/categories/new" method="POST">
+<form action="/admin/categories/add/new" method="POST">
     <div class="mb-3">
         <label for="name" class="form-label">Name: </label>
-        <input name="name" type="text" class="form-control sm" id="name" >
+        <input name="name" type="text" class="form-control sm" id="name" required>
     </div>
     <div class="mb-3">
         <label for="slug" class="form-label">Slug: </label>
-        <input name="slug" type="text" class="form-control sm" id="slug">
+        <input name="slug" type="text" class="form-control sm" id="slug" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description: </label>
+        <textarea name="description" type="text" class="form-control sm" id="description" required></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
